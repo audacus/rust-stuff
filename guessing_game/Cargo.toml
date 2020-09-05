@@ -1,0 +1,8 @@
+[package]
+authors = ["audacus <david.burkhart@hotmail.com>"]
+edition = "2018"
+name = "guessing_game"
+version = "0.1.0"
+
+[dependencies]
+rand = "0.7.3"
