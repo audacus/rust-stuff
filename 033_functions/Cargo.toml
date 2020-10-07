@@ -1,5 +1,5 @@
 [package]
-name = "stuff"
+name = "functions"
 version = "0.1.0"
 authors = ["audacus <david.burkhart@hotmail.com>"]
 edition = "2018"
