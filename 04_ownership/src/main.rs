@@ -1,9 +1,9 @@
 fn main() {
-    let l = "hello"; // string literal --> immutable, not stored on heap
+    let l = "hello"; // type "str" --> string literal --> immutable, not stored on heap
     let l = l.to_owned() + ", world!";
     println!("{}", l);
 
-    let mut s = String::from("hello"); // string object --> stored on heap
+    let mut s = String::from("hello"); // type "String" --> string object --> stored on heap
 
     s.push_str(", world!"); // push_str() appends a literal to a string
 
@@ -50,6 +50,67 @@ fn main() {
     let something1 = String::from("bla bla bla bla");
     let (something2, len) = calculate_length(something1);
     println!("The length of '{}' is {}.", something2, len);
+
+    let len = calculate_length_ref(&something2);
+
+    println!("The length of '{}' is {}.", something2, len);
+
+    let mut hello = String::from("hello");
+    change(&mut hello);
+
+    {
+        let r1 = &mut hello;
+        println!("{}", r1);
+    } // r1 goes out of scope here, so we can make a new reference with no problems.
+
+    let r2 = &hello;
+    println!("{}", r2);
+    // r2 is no longer used after this point
+
+    let r3 = &mut hello;
+    println!("{}", r3);
+
+    let _from_fn = no_dangle();
+
+    let mut words = String::from("hello world");
+
+    let _word = first_word(&words); // word will get the value 5
+
+    // words.clear(); // this empties the String, making it equal to ""
+
+    // word still has the value 5 here, but there's no more string that
+    // we could meaningfully use the value 5 with. word is now totally invalid!
+    //
+    let _hello = &words[0..5];
+    let _world = &words[6..11];
+
+    let _slice_begin = &words[0..2];
+    let _slice_begin = &words[..2];
+
+    let len = words.len();
+    let _slice_all = &words[0..len];
+    let _slice_all = &words[..];
+
+    let first = first_word(&words);
+
+    // words.clear(); // error!
+
+    println!("the first words is: {}", first);
+
+    let _my_string = String::from("hello world");
+
+    // first_word works slices of `String`s
+
+    let my_string_literal = "hello world";
+
+    // first_word works on slices of string literals
+    let _word = first_word(&my_string_literal[..]);
+
+    // Becaue string literals *are* string slices already, this works too, without the slice syntax!
+    let _word = first_word(my_string_literal);
+
+    let a = [1, 2, 3, 4, 5];
+    let _slice = &a[1..3];
 }
 
 fn takes_ownership(some_string: String) {
@@ -81,4 +142,51 @@ fn calculate_length(s: String) -> (String, usize) {
     let length = s.len(); // len() returns the length of a String
 
     (s, length)
+}
+
+fn calculate_length_ref(s: &String) -> usize {
+    // s is a reference to a String
+    s.len()
+} // Here, s goes out of scope. But because it does not have ownership of what it refers to, nothing happens.
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+
+// fn dangle() -> &String {
+//     // dangle returns a reference to a String
+//     let s = String::from("hello"); // s is a new String
+
+//     &s // we return a reference to the String, s
+// } // Here, s goes out of scope, and is dropped. Its memory goes away. Danger!
+
+fn no_dangle() -> String {
+    let s = String::from("hello");
+
+    s
+}
+
+fn first_word_old(s: &String) -> usize {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        // byte literal syntax
+        if item == b' ' {
+            return i;
+        }
+    }
+
+    s.len()
+}
+
+fn first_word(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
 }
