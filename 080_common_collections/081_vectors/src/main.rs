@@ -1,3 +1,9 @@
+enum SpreadsheetCell {
+    Int(i32),
+    Float(f64),
+    Text(String),
+}
+
 fn main() {
     {
         let v: Vec<i32> = Vec::new();
@@ -39,5 +45,22 @@ fn main() {
         // v.push(6); -> cannot borrow mutable (might has to rearange vector on heap -> reference to first value could get invalid)
 
         println!("The first element is: {}", first);
+    }
+
+    {
+        let mut v = vec![100, 32, 57];
+        for i in &mut v {
+            *i += 50;
+        }
+
+        println!("{:?}", v);
+    }
+
+    {
+        let row = vec![
+            SpreadsheetCell::Int(3),
+            SpreadsheetCell::Text(String::from("blue")),
+            SpreadsheetCell::Float(10.12),
+        ];
     }
 }
