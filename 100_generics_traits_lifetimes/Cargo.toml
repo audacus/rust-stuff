@@ -1,5 +1,5 @@
 [package]
-name = "panic_or_not_panic"
+name = "generics_traits_lifetimes"
 version = "0.1.0"
 edition = "2021"
 
