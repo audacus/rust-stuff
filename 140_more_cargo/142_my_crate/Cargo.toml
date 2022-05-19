@@ -1,7 +1,9 @@
 [package]
-name = "my_crate"
+name = "my_math_crate"
 version = "0.1.0"
 edition = "2021"
+description = "Example crate from the Rust book chapter 14."
+license = "MIT OR Apache-2.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
